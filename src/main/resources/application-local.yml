@@ -1,16 +1,18 @@
 spring:
- datasource:
-  hikari:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    jdbc-url: jdbc:mysql://127.0.0.1:3307/test
-    username: root
-    password: 1234
-jpa:
-  hibernate:
-#    ddl-auto: update 로 바꿔주면 스프링부트 재실행해도 db에 내용이 지워지지 않는다.
-    ddl-auto: create-drop # 스키마 자동 생성
-    show-sql: true  # SQL 쿼리 출력
+  datasource:
+      driver-class-name: "com.mysql.cj.jdbc.Driver"
+      url: "jdbc:mysql://127.0.0.1:3307/test"
+      username: "root"
+      password: "1234"
+
+  jpa:
+    show-sql: true
     properties:
       hibernate:
-        format_sql: true # SQL pretty print
-
+        #        show_sql: true
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+    hibernate:
+      #      db 변경 사항 적용 -> 향후 none
+      ddl-auto: update

@@ -17,7 +17,7 @@ public SignUpController(SignUpService signUpService){
   this.signUpService = signUpService;
 }
 
-  @GetMapping("/member/signUp") // HTTP GET 요청에 대한 핸들러
+  @GetMapping("/user/signUp") // HTTP GET 요청에 대한 핸들러
   public SignUpDto signUp() {
     return null;
   }

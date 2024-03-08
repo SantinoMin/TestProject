@@ -31,7 +31,7 @@ dependencies {
 //    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
     //MYSQL
-    implementation 'mysql:mysql-connector-java:8.0.35'
+    implementation 'com.mysql:mysql-connector-j'
     runtimeOnly  'mysql:mysql-connector-java'
 
     compileOnly 'org.projectlombok:lombok'
@@ -43,16 +43,16 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-//    // Redis
-//    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
-//    // SMS
-//    implementation "com.twilio.sdk:twilio:9.10.0"
-//    // EMAIL
-//    implementation 'org.springframework.boot:spring-boot-starter-mail'
-//    // TEST
-//    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-//        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-//    }
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+    // SMS
+    implementation "com.twilio.sdk:twilio:9.10.0"
+    // EMAIL
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // TEST
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
     testImplementation 'junit:junit:4.13.1'
 }
 
