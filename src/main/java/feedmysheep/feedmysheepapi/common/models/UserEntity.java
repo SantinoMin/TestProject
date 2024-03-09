@@ -8,8 +8,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Builder
 @Table(name="user")
 public class UserEntity {
 
@@ -42,6 +50,7 @@ public class UserEntity {
   @Column(name ="updateDate", nullable = false)
   private LocalDate updateDate;
 
+  // active 상태 만드려면, 어떻게 설정 해야되는지?
   @Column(name="valid", nullable = false)
   private boolean valid;
 
