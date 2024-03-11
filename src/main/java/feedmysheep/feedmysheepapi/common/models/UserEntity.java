@@ -8,15 +8,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.Date;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
 @Table(name="user")
 public class UserEntity {
@@ -55,4 +56,17 @@ public class UserEntity {
   private boolean valid;
 
 
+  public UserEntity(int id, String name, String password, boolean gender, String phone,
+      String address, Date birthday, Date registeredDate, LocalDate updateDate, boolean valid) {
+    this.id = id;
+    this.name = name;
+    this.password = password;
+    this.gender = gender;
+    this.phone = phone;
+    this.address = address;
+    this.birthday = birthday;
+    this.registeredDate = registeredDate;
+    this.updateDate = updateDate;
+    this.valid = valid;
+  }
 }

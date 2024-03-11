@@ -15,25 +15,19 @@ public class UserReqDto {
   public static class joinUser {
 
     @NotNull
-    private Long id;
-    @NotNull
     private String name;
     @NotNull
     private String password;
     @NotNull
     private Date birthday;
+    @NotNull
+    private String address;
+    @NotNull
+    private boolean gender;
+    @NotNull
+    private String phone;
+    @NotNull
+    private boolean valid;
   }
-//  @NotNull
-//  private boolean gender;
-//  @NotNull
-//  private String phone;
-//  @NotNull
-//  private String address;
-
-//  @NotNull
-//  private Date registeredDate;
-//  @NotNull
-//  private LocalDate updateDate;
-//  @NotNull
-//  private boolean valid;
-};
+}
+  ;

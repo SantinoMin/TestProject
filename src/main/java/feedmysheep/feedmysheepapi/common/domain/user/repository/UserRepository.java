@@ -12,8 +12,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-  @Query("SELECT u FROM UserEntity u WHERE u.name =: name and u.birthday =: birthday and u.valid = true ")
+  @Query("SELECT u FROM UserEntity u WHERE u.name =: name and u.birthday =: birthday and u.address =: address and u.valid = true ")
   Optional<UserResDto.joinUser> findUserByUserInfo(
-      @Param("name") String name, @Param("birthday") Date birthday);
+      @Param("name") String name, @Param("birthday") Date birthday,
+      @Param("address") String address);
 };
 
