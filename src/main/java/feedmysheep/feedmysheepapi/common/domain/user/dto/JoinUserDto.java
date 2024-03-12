@@ -1,6 +1,6 @@
 package feedmysheep.feedmysheepapi.common.domain.user.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +9,7 @@ import lombok.Setter;
 public class JoinUserDto {
 
   private String name;
-  private Date birthday;
+  private LocalDate birthday;
   private String address;
   private boolean gender;
   private String phone;
@@ -23,7 +23,8 @@ public class JoinUserDto {
 //
 //  }
 
-  public JoinUserDto(String name,  Date birthday, String address, boolean gender, String phone, boolean valid) {
+
+  public JoinUserDto(String name, LocalDate birthday, String address, boolean gender, String phone, boolean valid) {
     this.name = name;
     this.birthday = birthday;
     this.address = address;

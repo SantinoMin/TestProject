@@ -1,20 +1,21 @@
 package feedmysheep.feedmysheepapi.common.domain.user.repository;
 
-import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto;
 import feedmysheep.feedmysheepapi.common.models.UserEntity;
-import java.util.Date;
+import io.lettuce.core.dynamic.annotation.Param;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+//jpa를 사용하면, 아래 어노테이션은 작성 안해줘도 알아서 설정됨.
+//@EnableJpaRepositories
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-  @Query("SELECT u FROM UserEntity u WHERE u.name =: name and u.birthday =: birthday and u.address =: address and u.valid = true ")
-  Optional<UserResDto.joinUser> findUserByUserInfo(
-      @Param("name") String name, @Param("birthday") Date birthday,
-      @Param("address") String address);
+  //중복 회원 찾기
+  @Query("SELECT u FROM UserEntity u WHERE u.name =: name and u.phone =: phone and u.isValid = true ")
+  Optional<UserEntity> findUserByPhoneNumber(
+      @Param("name") String name,
+      @Param("phone") String phone);
 };
 

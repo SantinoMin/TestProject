@@ -1,9 +1,8 @@
 package feedmysheep.feedmysheepapi.common.domain.user.controller;
 
+import feedmysheep.feedmysheepapi.common.domain.user.dto.JoinUserDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.UserReqDto;
-import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto.joinUser;
 import feedmysheep.feedmysheepapi.common.domain.user.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +21,7 @@ public class UserController {
   }
 
   @PostMapping("/user/join")
-  public joinUser join(@Valid @RequestBody UserReqDto.joinUser body) {
+  public JoinUserDto join(@RequestBody UserReqDto.joinUser body) {
     return this.userService.join(body);
   }
 }

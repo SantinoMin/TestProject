@@ -1,8 +1,7 @@
 package feedmysheep.feedmysheepapi.common.domain.user.service;
 
+import feedmysheep.feedmysheepapi.common.domain.user.dto.JoinUserDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.UserReqDto;
-import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto;
-import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto.joinUser;
 import feedmysheep.feedmysheepapi.common.domain.user.repository.UserRepository;
 import feedmysheep.feedmysheepapi.common.global.utils.response.error.CustomException;
 import feedmysheep.feedmysheepapi.common.global.utils.response.error.ErrorMessage;
@@ -20,52 +19,47 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-  public UserResDto.joinUser join(UserReqDto.joinUser body
+  public JoinUserDto join(UserReqDto.joinUser body
   ) {
 
-    //1번 또는 2번으로 사용하기
-    // 1번
-    UserEntity user = UserEntity.builder()
+    String name = body.getName();
+    String phone = body.getPhone();
+
+   // 1) UserEntity에 해당하는 필드값들을 user라는 변수에 담기.
+    UserEntity userData = UserEntity.builder()
         .name(body.getName())
         .password(body.getPassword())
         .birthday(body.getBirthday())
         .address(body.getAddress())
         .gender(body.isGender())
         .phone(body.getPhone())
-        .valid(body.isValid())
+        .isValid(body.isValid())
         .build();
 
-    // 2번
-//    UserEntity userInfo = new UserEntity();
-//    userInfo.setName(body.getName());
-//    userInfo.setPassword(body.getPassword());
-//    userInfo.setBirthday(body.getBirthday());
-//    userInfo.setAddress(body.getAddress());
-//    userInfo.setGender(body.isGender());
-//    userInfo.setPhone(body.getPhone());
-//    userInfo.setValid(body.isValid());
+    // 2) userRepository에 1)에서 넣었던 값들을 저장.
+    UserEntity joinUser = this.userRepository.save(userData);
 
-    //!!!UserEntity를 사용해서, 값들을 userRepository에 저장하고
-    this.userRepository.save(user);
+    // 3) 중복된 유저인지 확인 // user는 값이 없는 추상적인 느낌임
+    this.userRepository.findUserByPhoneNumber(name, phone)
+        .ifPresent( user ->  {
+          throw new CustomException(ErrorMessage.ALREADY_JOINED_USER);
+        });
 
-    System.out.println(user);
+  //중복된 유저인지 찾기(중복으로 걸러낼 값: 폰번호) -> 3)에서 완료
+  //휴대폰 인증번호 받는 법 알아보기
+  //주소 입력하는건 어떻게 하지?
+  //로그인
 
-//    userName 중복 check
-    //!!!!근데 유저가 이미 있을 때, 에러를 띄워야함
+   System.out.println(joinUser);
 
-// JoinUserDto를 통하여, 원하는 값들만 받아 온 후, 그 값들을 반환하기.
+//    UserEntity userInfo = this.userRepository.findUserByUserInfo(body.getName(), body.getBirthday(), body.getAddress())
+//        .orElseThrow(() -> new CustomException(ErrorMessage.ALREADY_JOINED_USER));
 
-    //dto랑 매핑될 값들 설정
-    // 타입으로 dto 값들을 만들어보기
+    //원하는 타입만 가져오려고 만든거
+  JoinUserDto joinUserDto = new JoinUserDto(
+      body.getName(), body.getBirthday(),
+      body.getAddress(), body.isGender(), body.getPhone(), body.isValid());
 
-//    return this.~~mapper.difeifef(entity);
-
-    joinUser userInfo = this.userRepository.findUserByUserInfo(body.getName(), body.getBirthday(), body.getAddress())
-        .orElseThrow(() -> new CustomException(ErrorMessage.ALREADY_JOINED_USER));
-
-    UserResDto.joinUser userJoinInfo = new UserResDto.joinUser(body.getName(), body.getBirthday(),
-        body.getAddress(), body.isGender(), body.getPhone(), body.isValid());
-
-    return userJoinInfo;
-  }
+    return joinUserDto;
+}
 };
