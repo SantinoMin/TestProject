@@ -1,18 +1,20 @@
 spring:
   datasource:
-      driver-class-name: "com.mysql.cj.jdbc.Driver"
-      url: "jdbc:mysql://127.0.0.1:3307/test"
-      username: "root"
-      password: "1234"
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+    url: "jdbc:mysql://127.0.0.1:3307/test"
+    username: "root"
+    password: "1234"
 
   jpa:
     show-sql: true
     properties:
       hibernate:
-        #        show_sql: true
         format_sql: true
         highlight_sql: true
         use_sql_comments: true
-    hibernate:
-      #      db 변경 사항 적용 -> 향후 none
-      ddl-auto: update
+
+twilio:
+  credentials:
+    TWILIO_ACCOUNT_SID: ACed602bb1cc232f332a34ec5849fa4ec8
+    TWILIO_AUTH_TOKEN: 6082dd82e4455d82f3f06e9679304fd5
+    TWILIO_OUTGOING_SMS_NUMBER: +19896238055

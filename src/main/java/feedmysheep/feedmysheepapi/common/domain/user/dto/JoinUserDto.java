@@ -11,25 +11,20 @@ public class JoinUserDto {
   private String name;
   private LocalDate birthday;
   private String address;
-  private boolean gender;
+//  private Gender gender;
   private String phone;
-  private boolean isValid;
+  private boolean is_valid;
+  private LocalDate register_date;
 
-
-
-  //매개변수를 받는 생성(필드 초기화)
-//  public JoinUserDto(String name, String address, Date birthday) {
-//
-//
-//  }
-
-
-  public JoinUserDto(String name, LocalDate birthday, String address, boolean gender, String phone, boolean valid) {
+  public JoinUserDto(String name, LocalDate birthday, String address,
+//      Gender gender,
+      String phone, boolean valid, LocalDate register_date) {
     this.name = name;
     this.birthday = birthday;
     this.address = address;
-    this.gender = gender;
+//    this.gender = gender;
     this.phone = phone;
-    this.isValid = valid;
+    this.is_valid = valid;
+    this.register_date = register_date;
   }
 };

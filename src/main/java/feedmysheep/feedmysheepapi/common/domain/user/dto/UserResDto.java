@@ -17,17 +17,19 @@ public class UserResDto {
     private String name;
     private LocalDate birthday;
     private String address;
-    private boolean gender;
+//    private Gender gender;
     private String phone;
-    private boolean isValid;
+    private boolean is_valid;
 
 
-    public joinUser(String name, LocalDate birthday, String address, boolean gender, String phone, boolean valid) {
+    public joinUser(String name, LocalDate birthday, String address,
+//        Gender gender,
+        String phone, boolean valid) {
       this.name = name;
       this.birthday = birthday;
       this.address = address;
-      this.gender = gender;
+//      this.gender = gender;
       this.phone = phone;
-      this.isValid = valid;
+      this.is_valid = valid;
     }
 }};

@@ -1,6 +1,5 @@
 package feedmysheep.feedmysheepapi.common.domain.user.dto;
 
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,20 +13,24 @@ public class UserReqDto {
   @Getter
   public static class joinUser {
 
-    @NotNull(message = "id는 필수 값입니다.")
+    private int id;
+//    @NotNull(message = "id는 필수 값입니다.")
     private String name;
-    @NotNull(message = "password는 필수 값입니다.")
+//    @NotNull(message = "password는 필수 값입니다.")
     private String password;
-    @NotNull(message = "birthday는 필수 값입니다.")
+//    @NotNull(message = "birthday는 필수 값입니다.")
     private LocalDate birthday;
-    @NotNull(message = "address는 필수 값입니다.")
+//    @NotNull(message = "address는 필수 값입니다.")
     private String address;
-    @NotNull(message = "gender는 필수 값입니다.")
-    private boolean gender;
-    @NotNull(message = "phone는 필수 값입니다.")
+//    @NotNull(message = "gender는 필수 값입니다.")
+//    private Gender gender;
+//    @NotNull(message = "phone는 필수 값입니다.")
     private String phone;
-    @NotNull(message = "valid는 필수 값입니다.")
-    private boolean isValid;
+//    @NotNull(message = "valid는 필수 값입니다.")
+    private boolean is_valid;
+
+    private LocalDate register_date;
+    private LocalDate update_date;
   }
 }
   ;

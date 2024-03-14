@@ -7,34 +7,36 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
-import java.util.Date;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-@Table(name="user")
+@Table(name = "user")
 public class UserEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name= "id", nullable = false, unique = true)
+  @Column(name = "id", nullable = false, unique = true)
   private int id;
 
-  @Column(name="name", nullable = false)
+  @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(name="password", nullable = false)
+  @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name="gender", nullable = false)
-  private boolean gender;
+//  @Column(name="gender", nullable = true)
+//  @Enumerated(EnumType.STRING)
+
+//  private Gender gender;
 
   @Column(name = "phone", nullable = false, unique = true)
   private String phone;
@@ -45,28 +47,14 @@ public class UserEntity {
   @Column(name = "birthday", nullable = false)
   private LocalDate birthday;
 
-  @Column(name ="registeredDate", nullable = false)
-  private Date registeredDate;
-
-  @Column(name ="updateDate", nullable = false)
-  private Date updateDate;
-
   // active 상태 만드려면, 어떻게 설정 해야되는지?
-  @Column(name="valid", nullable = false)
-  private boolean isValid;
+  @Column(name = "is_valid", nullable = false)
+  private boolean is_valid;
 
+  @Column(name = "register_date", nullable = false)
+  private LocalDate register_date;
 
-  public UserEntity(int id, String name, String password, boolean gender, String phone,
-      String address, LocalDate birthday, Date registeredDate, Date updateDate, boolean valid) {
-    this.id = id;
-    this.name = name;
-    this.password = password;
-    this.gender = gender;
-    this.phone = phone;
-    this.address = address;
-    this.birthday = birthday;
-    this.registeredDate = registeredDate;
-    this.updateDate = updateDate;
-    this.isValid = valid;
-  }
+  @Column(name = "update_date", nullable = false)
+  private LocalDate update_date;
+
 }
