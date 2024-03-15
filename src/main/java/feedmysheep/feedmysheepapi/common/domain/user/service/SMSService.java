@@ -28,12 +28,14 @@ public class SMSService {
 //  }
 
   @PostConstruct
-  private void setup(){
+  private void setup() {
 //    log.info("ACCOUNT_SID" + ACCOUNT_SID);
     Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
   }
-  public String sendSMS(String smsNumber, String smsMessage){
+
+  //아래 코드 이해하도록.
+  public String sendSMS(String smsNumber, String smsMessage) {
 
     Message message = Message.creator(
         new PhoneNumber(smsNumber),
