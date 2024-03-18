@@ -18,23 +18,34 @@ public class MemberEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
-  private int id;
+  @Column(name = "id")
+  private Long id;
 
-  @Column
-  private String memberName;
+  @Column(name = "member_email", unique = true) // unique 제약조건 추가
+  private String member_email;
 
-  @Column
-  private String memberPassword;
+  @Column(name ="member_name")
+  private String member_name;
 
-  @Column(unique = true) // unique 제약조건 추가
-  private String memberEmail;
+  @Column(name = "member_password")
+  private String member_password;
 
 
+
+// dto -> entity로 변환하기 (아래와 같이)
   public static MemberEntity toMemberEntity(MemberDTO memberDTO){
     MemberEntity memberEntity = new MemberEntity();
-    memberEntity.setMemberName(memberDTO.getMemberName());
-    memberEntity.setMemberPassword(memberDTO.getMemberPassword());
-    memberEntity.setMemberEmail(memberDTO.getMemberEmail());
+    memberEntity.setMember_name(memberDTO.getMember_name());
+    memberEntity.setMember_password(memberDTO.getMember_password());
+    memberEntity.setMember_email(memberDTO.getMember_email());
     return memberEntity;
   }
-}
+
+  public static MemberEntity toUpdateMemberEntity(MemberDTO memberDTO){
+    MemberEntity memberEntity = new MemberEntity();
+    memberEntity.setId(memberDTO.getId());
+    memberEntity.setMember_name(memberDTO.getMember_name());
+    memberEntity.setMember_password(memberDTO.getMember_password());
+    memberEntity.setMember_email(memberDTO.getMember_email());
+    return memberEntity;
+}};

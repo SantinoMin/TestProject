@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>update</title>
+</head>
+<body>
+//name 값들이 DTO내부에 있는 필드값이랑 일치하도록 만들기 memberEmail -> member_email로 변경 필요.
+<form action="/member/update" method="post">
+  <input type="hidden" th:value="${updateMember.id}" name="id"><br>
+  이메일: <input type="text" th:value="${updateMember.member_email}" name="member_mail" readonly> <br>
+  비밀번호: <input type="text" th:value="${updateMember.member_password}" name="member_password"> <br>
+  이름: <input type="text" th:value="${updateMember.member_name}" name="member_name"> <br>
+  <input type="submit" value="정보수정">
+</form>
+</body>
+</html>

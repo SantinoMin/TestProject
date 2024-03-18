@@ -15,9 +15,10 @@ spring:
         format_sql: true
         highlight_sql: true
         use_sql_comments: true
+        ddl-auto: update
 
-twilio:
-  credentials:
-    TWILIO_ACCOUNT_SID: ACed602bb1cc232f332a34ec5849fa4ec8
-    TWILIO_AUTH_TOKEN: 6082dd82e4455d82f3f06e9679304fd5
-    TWILIO_OUTGOING_SMS_NUMBER: +19896238055
+#twilio:
+#  credentials:
+#    TWILIO_ACCOUNT_SID: ACed602bb1cc232f332a34ec5849fa4ec8
+#    TWILIO_AUTH_TOKEN: 6082dd82e4455d82f3f06e9679304fd5
+#    TWILIO_OUTGOING_SMS_NUMBER: +19896238055
