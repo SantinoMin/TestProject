@@ -1,14 +1,19 @@
 package feedmysheep.feedmysheepapi.common.domain.user.service;
 
-import feedmysheep.feedmysheepapi.common.domain.user.dto.JoinUserDto;
+import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserDto;
+import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.UserReqDto;
+import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.repository.UserRepository;
 import feedmysheep.feedmysheepapi.common.global.utils.response.error.CustomException;
 import feedmysheep.feedmysheepapi.common.global.utils.response.error.ErrorMessage;
 import feedmysheep.feedmysheepapi.common.models.UserEntity;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
+@Validated
 @Service
 public class UserService {
 
@@ -19,26 +24,17 @@ public class UserService {
     this.userRepository = userRepository;
   }
 
-//  public List<UserEntity> user(String id){
-//
-//     List<UserEntity> findUser = this.userRepository.findAll().stream().map(n -> n.getName()).toList();
-//    System.out.println(findUser);
-//    return findUser;
-//  }
-
-
-  public JoinUserDto join(UserReqDto.joinUser body
+  // 회원가입
+  public UserResDto.joinUser join(UserReqDto body
   ) {
 
-    String name = body.getName();
-    String phone = body.getPhone();
-
-    // 1) UserEntity에 해당하는 필드값들을 user라는 변수에 담기.
-    UserEntity userData = UserEntity.builder()
+    // body에서 가져온 dto값인데, Entity로 변환한거라고 보면 됨?ㅇㅇ
+    UserEntity user = UserEntity.builder()
         .id(body.getId())
         .name(body.getName())
         .password(body.getPassword())
         .phone(body.getPhone())
+        .email(body.getEmail())
         .address(body.getAddress())
         .birthday(body.getBirthday())
         .is_valid(body.is_valid())
@@ -46,33 +42,46 @@ public class UserService {
         .update_date(body.getUpdate_date())
         .build();
 
-    System.out.println(userData);
+    Optional<UserEntity> checkDuplicateUserByNameAndPhoneNumber =
+        this.userRepository.findUserByEmailAndPhone(body.getEmail(), body.getPhone());
 
-    // 2) userRepository에 1)에서 넣었던 값들을 저장.
-    UserEntity joinUser = this.userRepository.save(userData);
+    // 사용자가 입력한 값이(email,phone) 둘 중 하나라도 중복되는 값이 db에 있다면, "이미 등록된 회원" 메시지 띄우고 -> 회원가입 x
+    if (checkDuplicateUserByNameAndPhoneNumber.isPresent()) {
+      UserEntity joinUser = checkDuplicateUserByNameAndPhoneNumber.get();
+      if (joinUser.getEmail().equals(body.getEmail()) || joinUser.getPhone().equals(body.getPhone())) {
+        System.out.println("회원이 이미 있습니다.");
+        throw new CustomException(ErrorMessage.USER_ALREADY_EXIST);
+      }
+    } else {
+      System.out.println("회원가입 가능합니다.");
+      this.userRepository.save(user);
+      return UserResDto.joinUser.toUserDto(user);
+    }
+    //null 대신에 메시지를 띄우도록 해보기
+    return null;
+  }
 
-    // 3) 중복된 유저인지 확인
-    this.userRepository.findUserByPhoneNumber(name, phone)
-        .orElseThrow(() -> new CustomException(ErrorMessage.ALREADY_JOINED_USER)
-        );
 
-    System.out.println(joinUser);
+  public LoginUserResDto login(LoginUserDto body) {
 
-  //중복된 유저인지 찾기(중복으로 걸러낼 값: 폰번호) -> 3)에서 완료 // 근데 값 중복된 경우, 그냥 실행될 경우 메시지 띄우는 건 아직 미완료.
+    Optional<UserEntity> findUserByEmailAndPassword = this.userRepository.findUserByEmailAndPassword(
+        body.getEmail(), body.getPassword());
 
+    if (findUserByEmailAndPassword.isPresent()) {
+      UserEntity userEntity = findUserByEmailAndPassword.get();
+      if (userEntity.getEmail().equals(body.getEmail()) &&
+          userEntity.getPassword().equals(body.getPassword())) {
+        LoginUserResDto dto = LoginUserResDto.toUserDto(userEntity);
+        System.out.println("로그인에 성공 하였습니다!");
+        return dto;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }};
 
-  //휴대폰 인증번호 받는 법 알아보기
-  //주소 입력하는건 어떻게 하지?
-  //로그인
-
-  //원하는 타입만 가져오려고 만든거
-  JoinUserDto joinUserDto = new JoinUserDto(
-      body.getName(), body.getBirthday(),
-      body.getAddress(), body.getPhone(), body.is_valid(), body.getRegister_date()
-  );
-
-    System.out.println(joinUserDto);
-
-    return joinUserDto;
-}
-};
+//휴대폰 인증번호 받는 법 알아보기
+//주소 입력하는건 어떻게 하지?
+//LocalDate localdate = LocalDate.now(); 사용법?

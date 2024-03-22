@@ -22,30 +22,30 @@ public class MemberEntity {
   private Long id;
 
   @Column(name = "member_email", unique = true) // unique 제약조건 추가
-  private String member_email;
+  private String memberEmail;
 
   @Column(name ="member_name")
-  private String member_name;
+  private String memberName;
 
   @Column(name = "member_password")
-  private String member_password;
+  private String memberPassword;
 
 
 
 // dto -> entity로 변환하기 (아래와 같이)
   public static MemberEntity toMemberEntity(MemberDTO memberDTO){
     MemberEntity memberEntity = new MemberEntity();
-    memberEntity.setMember_name(memberDTO.getMember_name());
-    memberEntity.setMember_password(memberDTO.getMember_password());
-    memberEntity.setMember_email(memberDTO.getMember_email());
+    memberEntity.setMemberName(memberDTO.getMemberName());
+    memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+    memberEntity.setMemberEmail(memberDTO.getMemberEmail());
     return memberEntity;
   }
 
   public static MemberEntity toUpdateMemberEntity(MemberDTO memberDTO){
     MemberEntity memberEntity = new MemberEntity();
     memberEntity.setId(memberDTO.getId());
-    memberEntity.setMember_name(memberDTO.getMember_name());
-    memberEntity.setMember_password(memberDTO.getMember_password());
-    memberEntity.setMember_email(memberDTO.getMember_email());
+    memberEntity.setMemberName(memberDTO.getMemberName());
+    memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+    memberEntity.setMemberEmail(memberDTO.getMemberEmail());
     return memberEntity;
 }};

@@ -13,9 +13,15 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
   //중복 회원 찾기
-  @Query("SELECT u FROM UserEntity u WHERE u.name = :name and u.phone = :phone and u.is_valid= true ")
-  Optional<UserEntity> findUserByPhoneNumber(
-      @Param("name") String name,
+  @Query("SELECT u FROM UserEntity u WHERE u.email = :email and u.phone = :phone and u.is_valid = false")
+  Optional<UserEntity> findUserByEmailAndPhone(
+      @Param("email") String email,
       @Param("phone") String phone);
+
+  //E-mail과 비밀번호로 일치하는 회원 찾기
+  @Query("SELECT u FROM UserEntity u WHERE u.email = :email and u.password = :password and u.is_valid = false")
+  Optional<UserEntity> findUserByEmailAndPassword(
+      @Param("email") String email,
+      @Param("password") String password);
 };
 

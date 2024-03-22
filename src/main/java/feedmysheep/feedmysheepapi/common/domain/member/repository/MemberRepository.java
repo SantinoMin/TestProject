@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
-  @Query("SELECT m from MemberEntity m WHERE m.member_name = :member_name and m.member_email = :member_email")
-  Optional<MemberEntity> findByMemberEmail(@Param("member_name") String member_name, @Param("member_email") String member_email);
-}
+  @Query("SELECT m from MemberEntity m WHERE m.memberName = :memberName and m.memberEmail = :memberEmail")
+  Optional<MemberEntity> findByMemberNameAndEmail(@Param("memberName") String memberName, @Param("memberEmail") String memberEmail);
+};
 
 //  @Query("SELECT u FROM UserEntity u WHERE u.name = :name and u.phone = :phone and u.is_valid= true ")
 //  Optional<UserEntity> findUserByPhoneNumber(

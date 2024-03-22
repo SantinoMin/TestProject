@@ -5,14 +5,14 @@ import feedmysheep.feedmysheepapi.common.domain.member.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -44,8 +44,8 @@ public class MemberController {
     if (loginResult != null) {
       // login 성공
 //        session.setAttribute("loginName", loginResult.getMember_name());
-      session.setAttribute("member_email", loginResult.getMember_email());
-      session.setAttribute("member_name", loginResult.getMember_name());
+      session.setAttribute("member_email", loginResult.getMemberEmail());
+      session.setAttribute("member_name", loginResult.getMemberName());
       return "main";
     } else {
       // login 실패

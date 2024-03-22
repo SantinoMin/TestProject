@@ -33,8 +33,11 @@ public class UserEntity {
   @Column(name = "password", nullable = false)
   private String password;
 
+  @Column(name = "email", nullable = false)
+  private String email;
+
 //  @Column(name="gender", nullable = true)
-//  @Enumerated(EnumType.STRING)
+//  @Enumerated(EnumType.STRING);
 
 //  private Gender gender;
 

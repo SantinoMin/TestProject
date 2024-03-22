@@ -1,7 +1,6 @@
 package feedmysheep.feedmysheepapi.common.domain.user.dto;
 
 import feedmysheep.feedmysheepapi.common.models.UserEntity;
-import java.time.LocalDate;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,20 +8,30 @@ import lombok.Setter;
 
 
 @Data
+@Setter
+@Getter
+public class LoginUserResDto {
 
-public class UserResDto {
+
+  private String name;
+  //    private LocalDate birthday;
+  private String address;
+  private String email;
+  //    private Gender gender;
+  private String phone;
+
 
   @RequiredArgsConstructor
   @Getter
   @Setter
-  public static class joinUser {
+  public static class loginUser {
 
     private String name;
-    private LocalDate birthday;
+    //    private LocalDate birthday;
     private String address;
-//    private Gender gender;
-    private String phone;
     private String email;
+    //    private Gender gender;
+    private String phone;
 //    private boolean is_valid;
 
 //    @RequiredArgsConstructor
@@ -37,15 +46,14 @@ public class UserResDto {
 //      private String phone;
 ////    private boolean is_valid;
 //
+  }
 
-    public static UserResDto.joinUser toUserDto(UserEntity userEntity){
-      UserResDto.joinUser userDto = new UserResDto.joinUser();
+    public static LoginUserResDto toUserDto(UserEntity userEntity){
+      LoginUserResDto userDto = new LoginUserResDto();
       userDto.setName(userEntity.getName());
-//      userDto.setBirthday(userEntity.getBirthday());
-//      userDto.setAddress(userEntity.getAddress());
+      userDto.setAddress(userEntity.getAddress());
       userDto.setPhone(userEntity.getPhone());
-//      userDto.set_valid(userEntity.is_valid());
       userDto.setEmail(userEntity.getEmail());
       return userDto;
     }
-}};
+}
