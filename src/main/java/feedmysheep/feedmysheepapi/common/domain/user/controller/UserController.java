@@ -1,19 +1,20 @@
 package feedmysheep.feedmysheepapi.common.domain.user.controller;
 
-import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserDto;
+import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserReqDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.UserReqDto;
-import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.service.UserService;
-import feedmysheep.feedmysheepapi.common.global.utils.validation.ValidationGroup;
+import feedmysheep.feedmysheepapi.common.models.UserEntity;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/app")
 public class UserController {
@@ -33,15 +34,14 @@ public class UserController {
 //  }
 
   // 회원가입
-  @Validated(ValidationGroup.class)
   @PostMapping("/user/join")
-  public UserResDto.joinUser join(@Valid @RequestBody UserReqDto body) {
+  public ResponseEntity<UserEntity> join(@Valid @RequestBody UserReqDto body) {
     return this.userService.join(body);
   }
 
   // 로그인
   @PostMapping("/user/login")
-  public LoginUserResDto login(@RequestBody LoginUserDto body){
+  public LoginUserResDto login(@RequestBody LoginUserReqDto body){
     return this.userService.login(body);
   }
 

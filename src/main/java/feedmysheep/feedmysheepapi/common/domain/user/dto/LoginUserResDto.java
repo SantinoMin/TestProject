@@ -18,7 +18,7 @@ public class LoginUserResDto {
   private String address;
   private String email;
   //    private Gender gender;
-  private String phone;
+//  private String phone;
 
 
   @RequiredArgsConstructor
@@ -27,32 +27,21 @@ public class LoginUserResDto {
   public static class loginUser {
 
     private String name;
-    //    private LocalDate birthday;
+
     private String address;
     private String email;
-    //    private Gender gender;
     private String phone;
+    //    private Gender gender;
+    //    private LocalDate birthday;
 //    private boolean is_valid;
 
-//    @RequiredArgsConstructor
-//    @Getter
-//    @Setter
-//    public static class joinUser {
-//
-//      private String name;
-//      private LocalDate birthday;
-//      private String address;
-//      //    private Gender gender;
-//      private String phone;
-////    private boolean is_valid;
-//
   }
 
     public static LoginUserResDto toUserDto(UserEntity userEntity){
       LoginUserResDto userDto = new LoginUserResDto();
       userDto.setName(userEntity.getName());
       userDto.setAddress(userEntity.getAddress());
-      userDto.setPhone(userEntity.getPhone());
+//      userDto.setPhone(userEntity.getPhone());
       userDto.setEmail(userEntity.getEmail());
       return userDto;
     }
