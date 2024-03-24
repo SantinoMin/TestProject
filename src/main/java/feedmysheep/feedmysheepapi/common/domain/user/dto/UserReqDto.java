@@ -6,13 +6,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@Getter
 @Data
 @NoArgsConstructor
 @ToString
@@ -22,6 +25,7 @@ public class UserReqDto {
   private int id;
 
   @NotBlank(message = "name은 필수값입니다.")
+  @Size(min = 3, max = 20, message = "The username must be from 3 to 20 characters.")
   private String name;
 
   @NotBlank(message = "The password is required.")

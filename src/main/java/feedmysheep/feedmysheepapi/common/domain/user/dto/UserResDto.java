@@ -4,15 +4,16 @@ import feedmysheep.feedmysheepapi.common.models.UserEntity;
 import java.time.LocalDate;
 import lombok.Data;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 
+@Getter
+@Setter
 @Data
-
 public class UserResDto {
 
-  @RequiredArgsConstructor
+  private String message;
+
   @Getter
   @Setter
   public static class joinUser {
@@ -20,25 +21,21 @@ public class UserResDto {
     private String name;
     private LocalDate birthday;
     private String address;
-//    private Gender gender;
+    //    private Gender gender;
     private String phone;
     private String email;
 //    private boolean is_valid;
+  }
 
-//    @RequiredArgsConstructor
-//    @Getter
-//    @Setter
-//    public static class joinUser {
-//
-//      private String name;
-//      private LocalDate birthday;
-//      private String address;
-//      //    private Gender gender;
-//      private String phone;
-////    private boolean is_valid;
-//
+  public UserResDto(boolean b, String message) {
+    this.message = message;
+  }
+  public static UserResDto of(String message){
+    return new UserResDto(false, message);
+  }
 
-    public static UserResDto.joinUser toUserDto(UserEntity userEntity){
+
+  public static UserResDto.joinUser toUserDto(UserEntity userEntity){
       UserResDto.joinUser userDto = new UserResDto.joinUser();
       userDto.setName(userEntity.getName());
 //      userDto.setBirthday(userEntity.getBirthday());
@@ -48,4 +45,4 @@ public class UserResDto {
       userDto.setEmail(userEntity.getEmail());
       return userDto;
     }
-}};
+};

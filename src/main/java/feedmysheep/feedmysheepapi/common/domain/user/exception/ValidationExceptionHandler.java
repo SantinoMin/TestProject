@@ -1,19 +1,17 @@
-package feedmysheep.feedmysheepapi.common.exception;
+package feedmysheep.feedmysheepapi.common.domain.user.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-@ControllerAdvice
+@RestControllerAdvice
 public class ValidationExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<?> notValid(MethodArgumentNotValidException ex, HttpServletRequest request) {

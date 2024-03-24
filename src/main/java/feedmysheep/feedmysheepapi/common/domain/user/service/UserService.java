@@ -3,6 +3,7 @@ package feedmysheep.feedmysheepapi.common.domain.user.service;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserReqDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.UserReqDto;
+import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.repository.UserRepository;
 import feedmysheep.feedmysheepapi.common.global.utils.response.error.CustomException;
 import feedmysheep.feedmysheepapi.common.global.utils.response.error.ErrorMessage;
@@ -11,9 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
-@Validated
 @Service
 public class UserService {
 
@@ -25,7 +24,7 @@ public class UserService {
   }
 
   // 회원가입
-  public ResponseEntity<UserEntity> join(UserReqDto body
+  public ResponseEntity<UserResDto> join(UserReqDto body
   ) {
 
     // body에서 가져온 dto값인데, Entity로 변환한거라고 보면 됨?ㅇㅇ
