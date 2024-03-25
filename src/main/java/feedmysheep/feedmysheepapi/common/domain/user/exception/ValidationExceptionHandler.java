@@ -2,9 +2,8 @@ package feedmysheep.feedmysheepapi.common.domain.user.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,9 +18,12 @@ public class ValidationExceptionHandler {
 
     ex.getAllErrors().forEach(err -> errors.add(err.getDefaultMessage()));
 
-    Map<String, List<String>> result = new HashMap<>();
-    result.put("errors", errors);
+    Collections.sort(errors);
 
-    return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+//    Map<String, List<String>> result = new HashMap<>();
+//    result.put("errors", errors);
+//    return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+
+    return new ResponseEntity<>(Collections.singletonMap("errors", errors), HttpStatus.BAD_REQUEST);
   }
 }

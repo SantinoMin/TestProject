@@ -2,10 +2,12 @@ package feedmysheep.feedmysheepapi.common.domain.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class AddressDTO {
 
   @NotBlank(message = "[Address] The city is required.")

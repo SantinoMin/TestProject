@@ -20,7 +20,7 @@ public class UserResDto {
 
     private String name;
     private LocalDate birthday;
-    private String address;
+    private AddressDTO address;
     //    private Gender gender;
     private String phone;
     private String email;

@@ -7,7 +7,6 @@ import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +32,7 @@ public class UserController {
 
   // 회원가입
   @PostMapping("/user/join")
-  public ResponseEntity<UserResDto> join(@Valid @RequestBody UserReqDto body) {
+  public UserResDto join(@Valid @RequestBody UserReqDto body) {
     return this.userService.join(body);
   }
 

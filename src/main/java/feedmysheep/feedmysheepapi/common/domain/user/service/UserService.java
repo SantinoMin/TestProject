@@ -10,7 +10,6 @@ import feedmysheep.feedmysheepapi.common.global.utils.response.error.ErrorMessag
 import feedmysheep.feedmysheepapi.common.models.UserEntity;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,7 +23,7 @@ public class UserService {
   }
 
   // 회원가입
-  public ResponseEntity<UserResDto> join(UserReqDto body
+  public UserResDto join(UserReqDto body
   ) {
 
     // body에서 가져온 dto값인데, Entity로 변환한거라고 보면 됨?ㅇㅇ
@@ -36,16 +35,16 @@ public class UserService {
         .email(body.getEmail())
 //        .address(body.getAddress())
         .birthday(body.getBirthday())
-        .is_valid(body.is_valid())
-        .register_date(body.getRegister_date())
-        .update_date(body.getUpdate_date())
+//        .is_valid(body.is_valid())
+//        .register_date(body.getRegister_date())
+//        .update_date(body.getUpdate_date())
         .build();
 
     Optional<UserEntity> duplicateUserByEmailOrPhoneNumber =
         this.userRepository.findUserByEmailAndPhone(body.getEmail(), body.getPhone());
     if (duplicateUserByEmailOrPhoneNumber.isPresent()) {
       UserEntity byEmailAndPhoneNumberIsPresent = duplicateUserByEmailOrPhoneNumber.get();
-//      System.out.println("회원이 이미 있습니다.");
+      System.out.println("회원이 이미 있습니다.");
 
       if (byEmailAndPhoneNumberIsPresent.getEmail().equals(body.getEmail())
           || byEmailAndPhoneNumberIsPresent.getPhone().equals(body.getPhone())) {
