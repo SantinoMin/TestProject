@@ -8,6 +8,7 @@ import feedmysheep.feedmysheepapi.common.domain.user.repository.UserRepository;
 import feedmysheep.feedmysheepapi.common.global.utils.response.error.CustomException;
 import feedmysheep.feedmysheepapi.common.global.utils.response.error.ErrorMessage;
 import feedmysheep.feedmysheepapi.common.models.UserEntity;
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,18 +27,22 @@ public class UserService {
   public UserResDto join(UserReqDto body
   ) {
 
+    LocalDate registerDate = LocalDate.now();
+    LocalDate updateDate = LocalDate.now();
+
     // body에서 가져온 dto값인데, Entity로 변환한거라고 보면 됨?ㅇㅇ
     UserEntity user = UserEntity.builder()
         .id(body.getId())
         .name(body.getName())
+        .gender(body.getGender())
         .password(body.getPassword())
         .phone(body.getPhone())
         .email(body.getEmail())
-//        .address(body.getAddress())
+        .address(body.getAddress())
         .birthday(body.getBirthday())
 //        .is_valid(body.is_valid())
-//        .register_date(body.getRegister_date())
-//        .update_date(body.getUpdate_date())
+        .register_date(registerDate)
+        .update_date(updateDate)
         .build();
 
     Optional<UserEntity> duplicateUserByEmailOrPhoneNumber =
@@ -121,4 +126,3 @@ public class UserService {
 
 //휴대폰 인증번호 받는 법 알아보기
 //주소 입력하는건 어떻게 하지?
-//LocalDate localdate = LocalDate.now(); 사용법?

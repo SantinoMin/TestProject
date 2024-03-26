@@ -1,10 +1,9 @@
 package feedmysheep.feedmysheepapi.common.global.utils.response.error;
 
-public class ApplicationError {
+import lombok.Getter;
 
-  public String getStatus() {
-    return status;
-  }
+@Getter
+public class ApplicationError {
 
   public void setStatus(String status) {
     this.status = status;
@@ -13,11 +12,6 @@ public class ApplicationError {
   private String status;
   private String message;
 
-
-
-  public String getMessage() {
-    return message;
-  }
 
   public void setMessage(String message) {
     this.message = message;

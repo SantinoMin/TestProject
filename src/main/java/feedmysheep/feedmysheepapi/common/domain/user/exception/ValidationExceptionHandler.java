@@ -20,6 +20,7 @@ public class ValidationExceptionHandler {
 
     Collections.sort(errors);
 
+    //아래와 같이 작성
 //    Map<String, List<String>> result = new HashMap<>();
 //    result.put("errors", errors);
 //    return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);

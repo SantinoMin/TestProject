@@ -2,6 +2,8 @@ package feedmysheep.feedmysheepapi.common.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,16 +32,15 @@ public class UserEntity {
   @Column(name = "name", nullable = false)
   private String name;
 
+  @Column(name = "gender", nullable = false)
+  @Enumerated(EnumType.STRING)
+  private Gender gender;
+
   @Column(name = "password", nullable = false)
   private String password;
 
   @Column(name = "email", nullable = false)
   private String email;
-
-//  @Column(name="gender", nullable = true)
-//  @Enumerated(EnumType.STRING);
-
-//  private Gender gender;
 
   @Column(name = "phone", nullable = false, unique = true)
   private String phone;
@@ -51,8 +52,9 @@ public class UserEntity {
   private LocalDate birthday;
 
   // active 상태 만드려면, 어떻게 설정 해야되는지?
+  // boolean은 default가 false이긴 함, 그래도 설정해주기.
   @Column(name = "is_valid", nullable = false)
-  private boolean is_valid;
+  private boolean is_valid = false;
 
   @Column(name = "register_date", nullable = false)
   private LocalDate register_date;
@@ -61,3 +63,4 @@ public class UserEntity {
   private LocalDate update_date;
 
 }
+;

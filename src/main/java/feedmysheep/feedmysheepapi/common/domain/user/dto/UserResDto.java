@@ -1,5 +1,6 @@
 package feedmysheep.feedmysheepapi.common.domain.user.dto;
 
+import feedmysheep.feedmysheepapi.common.models.Gender;
 import feedmysheep.feedmysheepapi.common.models.UserEntity;
 import java.time.LocalDate;
 import lombok.Data;
@@ -20,20 +21,11 @@ public class UserResDto {
 
     private String name;
     private LocalDate birthday;
-    private AddressDTO address;
-    //    private Gender gender;
+    private String address;
+    private Gender gender;
     private String phone;
     private String email;
-//    private boolean is_valid;
   }
-
-  public UserResDto(boolean b, String message) {
-    this.message = message;
-  }
-  public static UserResDto of(String message){
-    return new UserResDto(false, message);
-  }
-
 
   public static UserResDto.joinUser toUserDto(UserEntity userEntity){
       UserResDto.joinUser userDto = new UserResDto.joinUser();
