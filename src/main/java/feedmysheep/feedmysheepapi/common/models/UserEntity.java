@@ -1,5 +1,6 @@
 package feedmysheep.feedmysheepapi.common.models;
 
+import feedmysheep.feedmysheepapi.common.domain.user.dto.UserReqDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -62,5 +63,15 @@ public class UserEntity {
   @Column(name = "update_date", nullable = false)
   private LocalDate update_date;
 
-}
-;
+
+  // dto -> entity로 변환하기
+  public static UserEntity toUserEntity(UserReqDto userReqDto) {
+    UserEntity userEntity = new UserEntity();
+    userEntity.setName(userReqDto.getName());
+    userEntity.setPhone(userReqDto.getPhone());
+    userEntity.setEmail(userReqDto.getEmail());
+    userEntity.setAddress(userReqDto.getAddress());
+    userEntity.setBirthday(userReqDto.getBirthday());
+    return userEntity;
+  }
+};

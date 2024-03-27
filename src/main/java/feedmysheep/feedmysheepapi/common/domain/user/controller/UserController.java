@@ -33,6 +33,19 @@ public class UserController {
     this.userService = userService;
   }
 
+  // 회원가입 페이지 출력 요청
+  @GetMapping("/user/mainPage")
+  public String mainPage() {
+      return "/user/mainPage";
+  }
+// 로그인, 회원가입시 jwt 적용 시켜서 진행?
+
+  // 이메일 중복 체크
+
+  // 주소 찾는
+
+
+
   // 회원가입
   @PostMapping("/user/join")
   public UserResDto join(@Valid @RequestBody UserReqDto body) {

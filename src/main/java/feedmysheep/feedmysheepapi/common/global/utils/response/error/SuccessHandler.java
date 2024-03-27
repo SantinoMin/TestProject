@@ -16,10 +16,14 @@ public class SuccessHandler extends ResponseEntityExceptionHandler {
   public ResponseEntity<ApplicationError> handlerCustomerSuccessException(CustomException exception, WebRequest webRequest) {
 
     ApplicationError success = new ApplicationError();
-    success.setStatus("SUCCESS");
+    success.setStatus(HttpStatus.OK.toString());
     success.setMessage(exception.getMessage());
 
+    System.out.println("success" + success);
+
     return new ResponseEntity<>(success, HttpStatus.OK);
+
+
   };
 
 }
