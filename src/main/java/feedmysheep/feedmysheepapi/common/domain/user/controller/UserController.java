@@ -39,11 +39,8 @@ public class UserController {
       return "/user/mainPage";
   }
 // 로그인, 회원가입시 jwt 적용 시켜서 진행?
-
-  // 이메일 중복 체크
-
   // 주소 찾는
-
+  // 스크린키 생성해줘야 되는듯?
 
 
   // 회원가입

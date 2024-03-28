@@ -41,7 +41,7 @@ public class UserService {
         .email(body.getEmail())
         .address(body.getAddress())
         .birthday(body.getBirthday())
-//        .is_valid(body.is_valid())
+        .is_valid(body.is_valid())
         .register_date(registerDate)
         .update_date(updateDate)
         .build();
@@ -61,9 +61,11 @@ public class UserService {
       //중복되는 회원이 없는 경우
       System.out.println("회원가입 가능합니다.");
       this.userRepository.save(user);
-      throw new CustomException(ErrorMessage.SUCCESS);
+//      return
     }
-//    return UserResDto.joinUser.toUserDto(user);
+    return UserResDto\]
+    '
+  '
   }
 
   ;;

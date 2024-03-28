@@ -54,7 +54,7 @@ public class UserReqDto {
   private String email;
 
   //dto에서는 is_valid작성 안해도 될듯? entity 작성할 때, 필드값으로 is_valid=false를 default로 설정하기.
-//  private boolean is_valid;
+  private boolean is_valid = false;
 
 //  @NotNull(message = "The register date is required.")
 //  @Past(message = "The register date must be in the past.")
