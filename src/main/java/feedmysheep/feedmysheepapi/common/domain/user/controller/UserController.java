@@ -51,7 +51,7 @@ public class UserController {
 
   // 로그인
   @PostMapping("/user/login")
-  public LoginUserResDto login(@Valid @RequestBody LoginUserReqDto body){
+  public  ResponseEntity<LoginUserResDto> login(@Valid @RequestBody LoginUserReqDto body){
     return this.userService.login(body);
   }
 

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,25 +79,25 @@ public class UserService {
 
   ;
 
-  public LoginUserResDto login(LoginUserReqDto body) {
+  public  ResponseEntity<LoginUserResDto> login(LoginUserReqDto body) {
 
-    Optional<UserEntity> findUserByEmailAndPassword = this.userRepository.findUserByEmailAndPassword(
+    Optional<UserEntity> UserByEmailAndPassword = this.userRepository.findUserByEmailAndPassword(
         body.getEmail(), body.getPassword());
 
-    if (findUserByEmailAndPassword.isPresent()) {
-      UserEntity userEntity = findUserByEmailAndPassword.get();
-      if (userEntity.getEmail().equals(body.getEmail()) &&
-          userEntity.getPassword().equals(body.getPassword())) {
-        LoginUserResDto dto = LoginUserResDto.toUserDto(userEntity);
-        System.out.println("로그인에 성공 하였습니다!");
-        return dto;
-      }
-      System.out.println("findUserByEmailAndPassword 메서드가 존재하지 않습니다.");
-      throw new CustomException(ErrorMessage.IS_EMPTY);
-    }
-    System.out.println("LoginUserResDto에 대한 값 반환하면 끝.");
-    return new LoginUserResDto();
-  }
-}
+    UserEntity findUserByEmailAndPassword = UserByEmailAndPassword.orElseThrow(
+        () -> new CustomException(ErrorMessage.NOT_FOUND_USER));
 
-;
+    if (findUserByEmailAndPassword.getEmail().equals(body.getEmail())
+        && findUserByEmailAndPassword.getPassword().equals(body.getPassword())) {
+      LoginUserResDto dto = LoginUserResDto.toUserDto(findUserByEmailAndPassword);
+      System.out.println("로그인에 성공 하였습니다!");
+      dto.setMessage("로그인에 성공하였습니다!"); // 성공 메시지 설정
+//      throw new CustomException(ErrorMessage.SUCCESS);
+//      return dto;
+      return ResponseEntity.ok(dto);
+    }
+
+    System.out.println("로그인에 실패 하였다.");
+    throw new CustomException(ErrorMessage.FAILTOLOGIN);
+  }
+};

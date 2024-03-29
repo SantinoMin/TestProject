@@ -19,6 +19,7 @@ public class LoginUserResDto {
   private String email;
   //    private Gender gender;
 //  private String phone;
+  private String message;
 
 
   @RequiredArgsConstructor
