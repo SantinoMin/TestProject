@@ -63,6 +63,9 @@ public class UserEntity {
   @Column(name = "update_date", nullable = false)
   private LocalDate update_date;
 
+  @Column(name ="message", nullable = true)
+  private String message;
+
 
   // dto -> entity로 변환하기
   public static UserEntity toUserEntity(UserReqDto userReqDto) {

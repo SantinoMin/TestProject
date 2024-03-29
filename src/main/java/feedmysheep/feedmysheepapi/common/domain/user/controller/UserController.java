@@ -34,9 +34,9 @@ public class UserController {
   }
 
   // 회원가입 페이지 출력 요청
-  @GetMapping("/user/mainPage")
-  public String mainPage() {
-      return "/user/mainPage";
+  @GetMapping("/main")
+  public String homeController() {
+      return "/main";
   }
 // 로그인, 회원가입시 jwt 적용 시켜서 진행?
   // 주소 찾는
@@ -45,7 +45,7 @@ public class UserController {
 
   // 회원가입
   @PostMapping("/user/join")
-  public UserResDto join(@Valid @RequestBody UserReqDto body) {
+  public UserResDto.message join(@Valid @RequestBody UserReqDto body) {
     return this.userService.join(body);
   }
 
