@@ -13,16 +13,19 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
   private final UserRepository userRepository;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.userRepository = userRepository;
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
 
@@ -32,13 +35,15 @@ public class UserService {
 
     LocalDate registerDate = LocalDate.now();
     LocalDate updateDate = LocalDate.now();
+    String password = body.getPassword();
 
     // body에서 가져온 dto값인데, Entity로 변환한거라고 보면 됨?ㅇㅇ
     UserEntity user = UserEntity.builder()
         .id(body.getId())
         .name(body.getName())
         .gender(body.getGender())
-        .password(body.getPassword())
+        //bCryptPassword로 보안 강화
+        .password(bCryptPasswordEncoder.encode(password))
         .phone(body.getPhone())
         .email(body.getEmail())
         .address(body.getAddress())
@@ -60,15 +65,16 @@ public class UserService {
     // 2. repository에서 회원 찾기 후, 중복되는 회원 없다면, 가입 하도록.
     List<UserEntity> findAllUser = this.userRepository.findAll();
     List<UserEntity> duplicateUser = findAllUser.stream().filter(checkUser ->
-        checkUser.getPhone().equals(body.getPhone()) || checkUser.getEmail()
+        checkUser.getPhone().equals(body.getPhone()) && checkUser.getEmail()
             .equals(body.getEmail())).toList();
 
     //?? 근데 성공했을 때에도 CustomException으로 실행함?
     if (duplicateUser.isEmpty()) {
       this.userRepository.save(user);
-      System.out.println("회원가입 가능합니다.");
+      System.out.println("회원가입에 성공 하였습니다.");
 
       throw new CustomException(ErrorMessage.SUCCESS);
+
 //      UserResDto.message userResDto = UserResDto.toMessage(user);
 //      return userResDto;
     } else {
@@ -84,12 +90,15 @@ public class UserService {
     Optional<UserEntity> UserByEmailAndPassword = this.userRepository.findUserByEmailAndPassword(
         body.getEmail(), body.getPassword());
 
+    // 1) 이메일과 비밀번호 중 하나라도 일치하지 않는 경우, 에러 메시지 띄우기
     UserEntity findUserByEmailAndPassword = UserByEmailAndPassword.orElseThrow(
         () -> new CustomException(ErrorMessage.NOT_FOUND_USER));
 
+    // 2) 이메일과 비밀번호 둘 다 일치할 경우, 로그인 성공
     if (findUserByEmailAndPassword.getEmail().equals(body.getEmail())
         && findUserByEmailAndPassword.getPassword().equals(body.getPassword())) {
       LoginUserResDto dto = LoginUserResDto.toUserDto(findUserByEmailAndPassword);
+
       System.out.println("로그인에 성공 하였습니다!");
       dto.setMessage("로그인에 성공하였습니다!"); // 성공 메시지 설정
 //      throw new CustomException(ErrorMessage.SUCCESS);
@@ -97,6 +106,8 @@ public class UserService {
       return ResponseEntity.ok(dto);
     }
 
+    //해당 부분이 실행이 될 가능성이 있으려나? -> 없어 보임
+    //아니면 return null;로 하는게 나을까?
     System.out.println("로그인에 실패 하였다.");
     throw new CustomException(ErrorMessage.FAILTOLOGIN);
   }

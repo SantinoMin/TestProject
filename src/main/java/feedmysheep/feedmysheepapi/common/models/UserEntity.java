@@ -30,6 +30,9 @@ public class UserEntity {
   @Column(name = "id", nullable = false, unique = true)
   private int id;
 
+  @Column(name="role", nullable = true)
+  private String role;
+
   @Column(name = "name", nullable = false)
   private String name;
 
