@@ -1,5 +1,8 @@
 package feedmysheep.feedmysheepapi.common.domain.user.config;
 
+
+import feedmysheep.feedmysheepapi.common.domain.user.jwt.JWTFilter;
+import feedmysheep.feedmysheepapi.common.domain.user.jwt.JWTUtil;
 import feedmysheep.feedmysheepapi.common.domain.user.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,14 +20,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
   private final AuthenticationConfiguration authenticationConfiguration;
+  private final JWTUtil jwtUtil;
 
-  public SecurityConfig(AuthenticationConfiguration authenticationConfiguration){
+  public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+
     this.authenticationConfiguration = authenticationConfiguration;
-
+    this.jwtUtil = jwtUtil;
   }
 
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+
     return configuration.getAuthenticationManager();
   }
 
@@ -34,7 +40,6 @@ public class SecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
-
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -42,7 +47,7 @@ public class SecurityConfig {
     http
         .csrf((auth) -> auth.disable());
 
-    //Form 로그인 방식 disable
+    //From 로그인 방식 disable
     http
         .formLogin((auth) -> auth.disable());
 
@@ -50,20 +55,22 @@ public class SecurityConfig {
     http
         .httpBasic((auth) -> auth.disable());
 
-    //경로별 인가 작업
+
     http
-        .authorizeHttpRequests((auth) -> auth.requestMatchers("/app/user/join", "/app/user/login").permitAll()
+        .authorizeHttpRequests((auth) -> auth
+            .requestMatchers("/app/user/login", "/app", "/app/user/join").permitAll()
             .requestMatchers("/admin").hasRole("ADMIN")
             .anyRequest().authenticated());
 
     http
-        .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
-
-    //!!(중요) 세션 설정
-    // 꼭 STATELESS로 설정해아 함.
+        .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
     http
-        .sessionManagement(
-            (session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+    //세션 설정
+    http
+        .sessionManagement((session) -> session
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
     return http.build();
   }

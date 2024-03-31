@@ -19,6 +19,12 @@ public class MemberController {
   //생성자 주입
   private final MemberService memberService;
 
+  @GetMapping("/")
+  public String index(){
+
+    return "index";
+  }
+
   @GetMapping("/member/save")
   public String saveForm() {
     return "save";
