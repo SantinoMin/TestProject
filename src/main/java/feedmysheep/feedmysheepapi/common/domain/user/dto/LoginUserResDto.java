@@ -13,7 +13,7 @@ import lombok.Setter;
 public class LoginUserResDto {
 
 
-  private String name;
+  private String userName;
   //    private LocalDate birthday;
   private String address;
   private String email;
@@ -40,7 +40,7 @@ public class LoginUserResDto {
 
     public static LoginUserResDto toUserDto(UserEntity userEntity){
       LoginUserResDto userDto = new LoginUserResDto();
-      userDto.setName(userEntity.getName());
+      userDto.setUserName(userEntity.getUsername());
       userDto.setAddress(userEntity.getAddress());
 //      userDto.setPhone(userEntity.getPhone());
       userDto.setEmail(userEntity.getEmail());

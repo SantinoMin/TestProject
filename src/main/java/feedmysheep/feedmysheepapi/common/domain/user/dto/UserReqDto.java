@@ -26,9 +26,9 @@ public class UserReqDto {
   @Id
   private int id;
 
-  @NotBlank(message = "name is required.")
+  @NotBlank(message = "userName is required.")
   @Size(min = 3, max = 20, message = "The username must be from 3 to 20 characters.")
-  private String name;
+  private String userName;
 
   @NotNull(message = "enter type of the Male or Female")
   private Gender gender;
@@ -70,7 +70,7 @@ public class UserReqDto {
   public static UserReqDto toUserReqDto(UserEntity userEntity) {
     UserReqDto userReqDto = new UserReqDto();
     userReqDto.setId(userEntity.getId());
-    userReqDto.setName(userEntity.getName());
+    userReqDto.setUserName(userEntity.getUsername());
     userReqDto.setPhone(userEntity.getPhone());
     return userReqDto;
   }

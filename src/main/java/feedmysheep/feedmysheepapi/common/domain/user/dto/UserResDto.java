@@ -21,7 +21,7 @@ public class UserResDto {
   @Setter
   public static class joinUser {
 
-    private String name;
+    private String userName;
     private LocalDate birthday;
     private String address;
     private Gender gender;
@@ -46,7 +46,7 @@ public class UserResDto {
 
   public static UserResDto.joinUser toJoinUserDto(UserEntity userEntity){
       UserResDto.joinUser userDto = new UserResDto.joinUser();
-      userDto.setName(userEntity.getName());
+      userDto.setUserName(userEntity.getUsername());
       userDto.setBirthday(userEntity.getBirthday());
       userDto.setAddress(userEntity.getAddress());
       userDto.setPhone(userEntity.getPhone());

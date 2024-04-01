@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j // 응답을 기록하는 데 도움이 되며 주로 디버깅 목적
+//@ResponseBody // 요거 왜 쓰고있지? // return되는 확인용으로 html이 아닌 문자열을 받기 위해.
 @RequestMapping("/app")
 public class UserController {
 

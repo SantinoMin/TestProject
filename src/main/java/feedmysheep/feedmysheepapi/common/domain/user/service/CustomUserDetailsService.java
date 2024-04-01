@@ -20,9 +20,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
   //메서드 구현 시켜주기
   @Override
-  public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    UserEntity userData = this.userRepository.findByName(name);
+    UserEntity userData = this.userRepository.findByUserName(username);
 
     if(userData != null){
       return new CustomUserDetails(userData);

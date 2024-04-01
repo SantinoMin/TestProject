@@ -29,7 +29,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
     String username = obtainUsername(request);
-    String password = obtainPassword(request);
+    String password = obtainUsername(request);
 
     System.out.println(username);
 

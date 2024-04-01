@@ -35,12 +35,22 @@ public class UserService {
 
     LocalDate registerDate = LocalDate.now();
     LocalDate updateDate = LocalDate.now();
+
+    String username = body.getUserName();
     String password = body.getPassword();
+
+//    Boolean isExist = userRepository.existsByUsername(username);
+//
+//    if (isExist) {
+//
+//      return;
+//    }
 
     // body에서 가져온 dto값인데, Entity로 변환한거라고 보면 됨?ㅇㅇ
     UserEntity user = UserEntity.builder()
         .id(body.getId())
-        .name(body.getName())
+        .username(body.getUserName())
+        .role("ROLE_ADMIN")
         .gender(body.getGender())
         //bCryptPassword로 보안 강화
         .password(bCryptPasswordEncoder.encode(password))

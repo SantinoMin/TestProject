@@ -30,11 +30,11 @@ public class UserEntity {
   @Column(name = "id", nullable = false, unique = true)
   private int id;
 
-  @Column(name="role", nullable = true)
+  @Column(name="role", nullable = false)
   private String role;
 
-  @Column(name = "name", nullable = false)
-  private String name;
+  @Column(name = "username", nullable = false)
+  private String username;
 
   @Column(name = "gender", nullable = false)
   @Enumerated(EnumType.STRING)
@@ -73,7 +73,7 @@ public class UserEntity {
   // dto -> entity로 변환하기
   public static UserEntity toUserEntity(UserReqDto userReqDto) {
     UserEntity userEntity = new UserEntity();
-    userEntity.setName(userReqDto.getName());
+    userEntity.setUsername(userReqDto.getUserName());
     userEntity.setPhone(userReqDto.getPhone());
     userEntity.setEmail(userReqDto.getEmail());
     userEntity.setAddress(userReqDto.getAddress());

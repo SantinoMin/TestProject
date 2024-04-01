@@ -29,7 +29,7 @@ public class JWTFilter extends OncePerRequestFilter {
     String authorization= request.getHeader("Authorization");
 
     //Authorization 헤더 검증
-    if (authorization == null || !authorization.startsWith("Bearer ")) {
+    if (authorization == null || !authorization.startsWith("Bearer")) {
 
       System.out.println("token null");
       filterChain.doFilter(request, response);
@@ -50,12 +50,11 @@ public class JWTFilter extends OncePerRequestFilter {
       return;
     }
 
-
-    String name = jwtUtil.getUsername(token);
+    String userName = jwtUtil.getUserName(token);
     String role = jwtUtil.getRole(token);
 
     UserEntity userEntity = new UserEntity();
-    userEntity.setName(name);
+    userEntity.setUsername(userName);
     userEntity.setPassword("temppassword");
     userEntity.setRole(role);
 
