@@ -56,8 +56,10 @@ public class UserController {
     return this.userService.login(body);
   }
 
-  // 휴대폰 인증
-  // One-time-Password
+  /**
+   * 휴대폰인증
+   * on time- apswird
+   */
   @GetMapping("/user/verification")
   public ResponseEntity<String> generateOTP(){
     String ACCOUNT_SID = "ACed602bb1cc232f332a34ec5849fa4ec8";

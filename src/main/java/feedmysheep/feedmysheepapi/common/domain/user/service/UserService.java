@@ -23,13 +23,14 @@ public class UserService {
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
-  public UserService(UserRepository userRepository,BCryptPasswordEncoder bCryptPasswordEncoder) {
+  public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.userRepository = userRepository;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
-
-  // 회원가입
+  /**
+   * 회원가입
+   */
   public UserResDto.message join(UserReqDto body
   ) {
 
@@ -38,15 +39,55 @@ public class UserService {
 
     String username = body.getUserName();
     String password = body.getPassword();
+    String email = body.getEmail();
+    String phone = body.getPhone();
 
-//    Boolean isExist = userRepository.existsByUsername(username);
-//
-//    if (isExist) {
-//
-//      return;
-//    }
+    /**
+     * 중복 회원 찾기(Email) And 중복 회원 찾기(Phone)
+     */
+    Optional<UserEntity> duplicateUserByEmail =
+        this.userRepository.findUserByEmail(email);
 
-    // body에서 가져온 dto값인데, Entity로 변환한거라고 보면 됨?ㅇㅇ
+    Optional<UserEntity> duplicateUserByPhone =
+        this.userRepository.findUserByPhone(phone);
+
+    /**
+     * 1. 이메일 또는 휴대폰 번호가 이미 존재하는 경우, 에러 메시지 띄우기
+     */
+
+    UserEntity byEmail = duplicateUserByEmail.orElseThrow(
+        () -> new CustomException(ErrorMessage.DUPLICATE_EMAIL));
+    System.out.println("이메일 중복!");
+
+    UserEntity byPhone = duplicateUserByPhone.orElseThrow(
+        () -> new CustomException(ErrorMessage.DUPLICATE_PHONE));
+    System.out.println("휴대폰 번호 중복!");
+
+    /**
+     * 2. duplicateUserList에서 email,phone 둘 다 중복되는 경우 -> 둘 다 중복
+     * 2-1.duplicaeUserList에서 둘 다 해당하는 경우 없으면 -> 회원 가입 가능.
+     */
+    List<UserEntity> duplicateUserList = this.userRepository.findDuplicateUser(body.getEmail(),
+            body.getPhone())
+        .stream()
+        .filter(user -> user.getEmail().equals(body.getEmail()) && user.getPhone()
+            .equals(body.getPhone()))
+        .toList();
+
+    duplicateUserList.forEach(user -> {
+      if (user.getEmail().equals(body.getEmail()) && user.getPhone().equals(body.getPhone())) {
+        System.out.println("해당 유저가 이미 존재합니다.(이메일, 휴대폰 번호 둘 다 중복");
+        throw new CustomException(ErrorMessage.USER_ALREADY_EXIST);
+      }
+    });
+
+    /**
+     * 3. 회원가입 가능할 경우
+     */
+    duplicateUserList.stream().findAny()
+        .orElseThrow(() -> new CustomException(ErrorMessage.SUCCESS));
+
+    // repository에 저장할 데이터 설정
     UserEntity user = UserEntity.builder()
         .id(body.getId())
         .username(body.getUserName())
@@ -63,39 +104,18 @@ public class UserService {
         .update_date(updateDate)
         .build();
 
-    Optional<UserEntity> duplicateUserByEmailOrPhoneNumber =
-        this.userRepository.findUserByEmailAndPhone(body.getEmail(), body.getPhone());
+    this.userRepository.save(user);
+    System.out.println("회원가입에 성공 하였습니다.");
 
-    // 1. 이미 등록된 회원인 경우 -> 회원가입 안 됨 => 에러 메시지 띄우고 추가 작업 x
-    duplicateUserByEmailOrPhoneNumber.ifPresent(duplicateUser -> {
-      System.out.println("이미 등록된 회원입니다.");
-      throw new CustomException(ErrorMessage.USER_ALREADY_EXIST);
-    });
+    UserResDto.message success = new UserResDto.message();
+    success.setMessage("성공");
 
-    // 2. repository에서 회원 찾기 후, 중복되는 회원 없다면, 가입 하도록.
-    List<UserEntity> findAllUser = this.userRepository.findAll();
-    List<UserEntity> duplicateUser = findAllUser.stream().filter(checkUser ->
-        checkUser.getPhone().equals(body.getPhone()) && checkUser.getEmail()
-            .equals(body.getEmail())).toList();
-
-    //?? 근데 성공했을 때에도 CustomException으로 실행함?
-    if (duplicateUser.isEmpty()) {
-      this.userRepository.save(user);
-      System.out.println("회원가입에 성공 하였습니다.");
-
-      throw new CustomException(ErrorMessage.SUCCESS);
-
-//      UserResDto.message userResDto = UserResDto.toMessage(user);
-//      return userResDto;
-    } else {
-      System.out.println("이메일 또는 휴대폰 번호가 이미 존재합니다.");
-      throw new CustomException(ErrorMessage.DUPLICATE_EMAILORPHONE);
-    }
+    return success;
   }
 
-  ;
+  ;;;
 
-  public  ResponseEntity<LoginUserResDto> login(LoginUserReqDto body) {
+  public ResponseEntity<LoginUserResDto> login(LoginUserReqDto body) {
 
     Optional<UserEntity> UserByEmailAndPassword = this.userRepository.findUserByEmailAndPassword(
         body.getEmail(), body.getPassword());

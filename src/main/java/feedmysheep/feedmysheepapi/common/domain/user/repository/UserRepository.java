@@ -2,6 +2,7 @@ package feedmysheep.feedmysheepapi.common.domain.user.repository;
 
 import feedmysheep.feedmysheepapi.common.models.UserEntity;
 import io.lettuce.core.dynamic.annotation.Param;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,11 +13,29 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-  //중복 회원 찾기
-  @Query("SELECT u FROM UserEntity u WHERE u.email = :email and u.phone = :phone and u.is_valid = false")
-  Optional<UserEntity> findUserByEmailAndPhone(
-      @Param("email") String email,
+  /**
+   * 중복 회원 조회(E-mail)
+   * */
+  @Query("SELECT u FROM UserEntity u WHERE u.email = :email and u.is_valid = false")
+  Optional<UserEntity> findUserByEmail(
+      @Param("email") String email);
+
+  /**
+   * 중복 회원 조회(Phone)
+   * */
+  @Query("SELECT u FROM UserEntity u WHERE u.phone = :phone and u.is_valid = false")
+  Optional<UserEntity> findUserByPhone(
       @Param("phone") String phone);
+
+  /**
+   *
+   */
+  @Query("SELECT u FROM UserEntity u WHERE u.phone = :phone and u.email = :email and u.is_valid = false")
+  List<UserEntity> findDuplicateUser(
+      @Param("phone") String phone, @Param("email")String email);
+
+
+
 
   //E-mail과 비밀번호로 일치하는 회원 찾기
   @Query("SELECT u FROM UserEntity u WHERE u.email = :email and u.password = :password and u.is_valid = false")

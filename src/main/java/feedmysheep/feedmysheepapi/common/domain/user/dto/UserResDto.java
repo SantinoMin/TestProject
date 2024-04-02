@@ -15,7 +15,7 @@ import lombok.Setter;
 @Data
 public class UserResDto {
 
-  private String message;
+  public String message;
 
   @Getter
   @Setter
