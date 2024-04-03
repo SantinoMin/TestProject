@@ -1,7 +1,6 @@
 package feedmysheep.feedmysheepapi.common.domain.user.service;
 
 import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserReqDto;
-import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.UserReqDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.repository.UserRepository;
@@ -9,7 +8,6 @@ import feedmysheep.feedmysheepapi.common.global.utils.response.error.CustomExcep
 import feedmysheep.feedmysheepapi.common.global.utils.response.error.ErrorMessage;
 import feedmysheep.feedmysheepapi.common.models.UserEntity;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +29,7 @@ public class UserService {
   /**
    * 회원가입
    */
-  public UserResDto.message join(UserReqDto body
+  public ResponseEntity<UserResDto.message> join(UserReqDto body
   ) {
 
     LocalDate registerDate = LocalDate.now();
@@ -43,49 +41,46 @@ public class UserService {
     String phone = body.getPhone();
 
     /**
-     * 중복 회원 찾기(Email) And 중복 회원 찾기(Phone)
+     * 1.중복 회원 찾기(Email) And 중복 회원 찾기(Phone)
      */
-    Optional<UserEntity> duplicateUserByEmail =
-        this.userRepository.findUserByEmail(email);
 
-    Optional<UserEntity> duplicateUserByPhone =
-        this.userRepository.findUserByPhone(phone);
+    // 중복 회원 찾기(Email)
+    Optional<UserEntity> duplicateUserByEmail = this.userRepository.findUserByEmail(email);
+    // 중복 회원 찾기(Phone)
+    Optional<UserEntity> duplicateUserByPhone = this.userRepository.findUserByPhone(phone);
+
+    //세팅 다시하자
+    // 1-1. 이메일 중복건 1-2. 폰 번호 중복건 -> 변수로 만들기
+    // 2.
+
+    // 회원가입 절차)
+    // 1. 이메일 중복 -> 중복이라고 하고 끝
+    // 2. 폰 번호 중복 -> 폰 번호 중복이라고 하고 끝
+    // repository에서 저장되어 있는 user정보와 dto에서 얻은 user가 입력한 정보 비교하기.
 
     /**
-     * 1. 이메일 또는 휴대폰 번호가 이미 존재하는 경우, 에러 메시지 띄우기
+     * 2. 이메일 또는 휴대폰 번호가 이미 존재하는 경우, 에러 메시지 띄우기
      */
 
-    UserEntity byEmail = duplicateUserByEmail.orElseThrow(
-        () -> new CustomException(ErrorMessage.DUPLICATE_EMAIL));
-    System.out.println("이메일 중복!");
-
-    UserEntity byPhone = duplicateUserByPhone.orElseThrow(
-        () -> new CustomException(ErrorMessage.DUPLICATE_PHONE));
-    System.out.println("휴대폰 번호 중복!");
-
-    /**
-     * 2. duplicateUserList에서 email,phone 둘 다 중복되는 경우 -> 둘 다 중복
-     * 2-1.duplicaeUserList에서 둘 다 해당하는 경우 없으면 -> 회원 가입 가능.
-     */
-    List<UserEntity> duplicateUserList = this.userRepository.findDuplicateUser(body.getEmail(),
-            body.getPhone())
-        .stream()
-        .filter(user -> user.getEmail().equals(body.getEmail()) && user.getPhone()
-            .equals(body.getPhone()))
-        .toList();
-
-    duplicateUserList.forEach(user -> {
-      if (user.getEmail().equals(body.getEmail()) && user.getPhone().equals(body.getPhone())) {
-        System.out.println("해당 유저가 이미 존재합니다.(이메일, 휴대폰 번호 둘 다 중복");
-        throw new CustomException(ErrorMessage.USER_ALREADY_EXIST);
+    // 이메일 중복 검사
+    duplicateUserByEmail.ifPresent(user -> {
+      if (user.getEmail().equals(body.getEmail())) {
+        throw new CustomException(ErrorMessage.DUPLICATE_EMAIL);
       }
     });
 
+    // 휴대폰 번호 중복 검사
+    duplicateUserByPhone.ifPresent(user -> {
+      if(user.getPhone().equals(body.getPhone())){
+        throw new CustomException(ErrorMessage.DUPLICATE_PHONE);
+      }});
+
+
     /**
-     * 3. 회원가입 가능할 경우
+     * 3.duplicaeUserList에서 해당 user가 있는 경우 그대로 실행=중복 // 없는 경우 -> 회원 가입 가능.
      */
-    duplicateUserList.stream().findAny()
-        .orElseThrow(() -> new CustomException(ErrorMessage.SUCCESS));
+
+    boolean saveUser = userRepository.findDuplicateUserByPhoneAndEmail(body.getPhone(), body.getEmail()).isEmpty();
 
     // repository에 저장할 데이터 설정
     UserEntity user = UserEntity.builder()
@@ -108,14 +103,14 @@ public class UserService {
     System.out.println("회원가입에 성공 하였습니다.");
 
     UserResDto.message success = new UserResDto.message();
-    success.setMessage("성공");
+    success.setMessage("회원가입에 성공 하였습니다");
 
-    return success;
+    return ResponseEntity.ok(success);
   }
 
-  ;;;
+  ;
 
-  public ResponseEntity<LoginUserResDto> login(LoginUserReqDto body) {
+  public ResponseEntity<UserResDto.message> login(LoginUserReqDto body) {
 
     Optional<UserEntity> UserByEmailAndPassword = this.userRepository.findUserByEmailAndPassword(
         body.getEmail(), body.getPassword());
@@ -127,17 +122,13 @@ public class UserService {
     // 2) 이메일과 비밀번호 둘 다 일치할 경우, 로그인 성공
     if (findUserByEmailAndPassword.getEmail().equals(body.getEmail())
         && findUserByEmailAndPassword.getPassword().equals(body.getPassword())) {
-      LoginUserResDto dto = LoginUserResDto.toUserDto(findUserByEmailAndPassword);
+      UserResDto.message dto = new UserResDto.message();
 
       System.out.println("로그인에 성공 하였습니다!");
       dto.setMessage("로그인에 성공하였습니다!"); // 성공 메시지 설정
-//      throw new CustomException(ErrorMessage.SUCCESS);
-//      return dto;
       return ResponseEntity.ok(dto);
     }
 
-    //해당 부분이 실행이 될 가능성이 있으려나? -> 없어 보임
-    //아니면 return null;로 하는게 나을까?
     System.out.println("로그인에 실패 하였다.");
     throw new CustomException(ErrorMessage.FAILTOLOGIN);
   }

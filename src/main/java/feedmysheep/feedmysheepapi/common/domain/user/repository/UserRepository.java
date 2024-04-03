@@ -31,7 +31,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
    *
    */
   @Query("SELECT u FROM UserEntity u WHERE u.phone = :phone and u.email = :email and u.is_valid = false")
-  List<UserEntity> findDuplicateUser(
+  List<UserEntity> findDuplicateUserByPhoneAndEmail(
       @Param("phone") String phone, @Param("email")String email);
 
 

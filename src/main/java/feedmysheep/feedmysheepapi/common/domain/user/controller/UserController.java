@@ -4,7 +4,6 @@ import com.twilio.Twilio;
 import com.twilio.rest.verify.v2.service.Verification;
 import com.twilio.rest.verify.v2.service.VerificationCheck;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserReqDto;
-import feedmysheep.feedmysheepapi.common.domain.user.dto.LoginUserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.UserReqDto;
 import feedmysheep.feedmysheepapi.common.domain.user.dto.UserResDto;
 import feedmysheep.feedmysheepapi.common.domain.user.service.UserService;
@@ -46,13 +45,13 @@ public class UserController {
 
   // 회원가입
   @PostMapping("/user/join")
-  public UserResDto.message join(@Valid @RequestBody UserReqDto body) {
+  public ResponseEntity<UserResDto.message> join(@Valid @RequestBody UserReqDto body) {
     return this.userService.join(body);
   }
 
   // 로그인
   @PostMapping("/user/login")
-  public  ResponseEntity<LoginUserResDto> login(@Valid @RequestBody LoginUserReqDto body){
+  public  ResponseEntity<UserResDto.message> login(@Valid @RequestBody LoginUserReqDto body){
     return this.userService.login(body);
   }
 
