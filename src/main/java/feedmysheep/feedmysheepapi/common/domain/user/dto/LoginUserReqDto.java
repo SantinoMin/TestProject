@@ -20,16 +20,14 @@ public class LoginUserReqDto {
   @NotNull(message = "password는 필수 값입니다.")
   private String password;
 
-
-  // entity -> dto로 변환하기
+  /**
+   * entity -> dto로 변환하기
+   */
   public static LoginUserReqDto toUserReqDto(UserEntity userEntity) {
     LoginUserReqDto userReqDto = new LoginUserReqDto();
     userReqDto.setEmail(userEntity.getEmail());
     userReqDto.setPassword(userEntity.getPassword());
 
-//    userReqDto.setId(userEntity.getId());
-//    userReqDto.setName(userEntity.getName());
-//    userReqDto.setPhone(userEntity.getPhone());
     return userReqDto;
   }
 }

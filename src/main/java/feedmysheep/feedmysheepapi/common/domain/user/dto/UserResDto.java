@@ -33,25 +33,26 @@ public class UserResDto {
   @Setter
   @Getter
   public static class message {
+
     private String message;
 
   }
 
-  public static UserResDto.message toMessage(UserEntity userEntity){
+  public static UserResDto.message toMessage(UserEntity userEntity) {
     UserResDto.message userDto = new UserResDto.message();
     userDto.setMessage(userEntity.getMessage());
     return userDto;
   }
 
 
-  public static UserResDto.joinUser toJoinUserDto(UserEntity userEntity){
-      UserResDto.joinUser userDto = new UserResDto.joinUser();
-      userDto.setUserName(userEntity.getUsername());
-      userDto.setBirthday(userEntity.getBirthday());
-      userDto.setAddress(userEntity.getAddress());
-      userDto.setPhone(userEntity.getPhone());
+  public static UserResDto.joinUser toJoinUserDto(UserEntity userEntity) {
+    UserResDto.joinUser userDto = new UserResDto.joinUser();
+    userDto.setUserName(userEntity.getUsername());
+    userDto.setBirthday(userEntity.getBirthday());
+    userDto.setAddress(userEntity.getAddress());
+    userDto.setPhone(userEntity.getPhone());
 //      userDto.set_valid(userEntity.is_valid());
-      userDto.setEmail(userEntity.getEmail());
-      return userDto;
-    }
+    userDto.setEmail(userEntity.getEmail());
+    return userDto;
+  }
 };

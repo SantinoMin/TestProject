@@ -14,11 +14,8 @@ public class LoginUserResDto {
 
 
   private String userName;
-  //    private LocalDate birthday;
   private String address;
   private String email;
-  //    private Gender gender;
-//  private String phone;
   private String message;
 
 
@@ -28,22 +25,18 @@ public class LoginUserResDto {
   public static class loginUser {
 
     private String name;
-
     private String address;
     private String email;
     private String phone;
-    //    private Gender gender;
-    //    private LocalDate birthday;
-//    private boolean is_valid;
 
   }
 
-    public static LoginUserResDto toUserDto(UserEntity userEntity){
-      LoginUserResDto userDto = new LoginUserResDto();
-      userDto.setUserName(userEntity.getUsername());
-      userDto.setAddress(userEntity.getAddress());
-//      userDto.setPhone(userEntity.getPhone());
-      userDto.setEmail(userEntity.getEmail());
-      return userDto;
-    }
+
+  public static LoginUserResDto toUserDto(UserEntity userEntity) {
+    LoginUserResDto userDto = new LoginUserResDto();
+    userDto.setUserName(userEntity.getUsername());
+    userDto.setAddress(userEntity.getAddress());
+    userDto.setEmail(userEntity.getEmail());
+    return userDto;
+  }
 }

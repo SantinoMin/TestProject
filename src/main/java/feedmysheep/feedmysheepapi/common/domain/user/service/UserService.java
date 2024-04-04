@@ -88,13 +88,12 @@ public class UserService {
         .username(body.getUserName())
         .role("ROLE_ADMIN")
         .gender(body.getGender())
-        //bCryptPassword로 보안 강화
         .password(bCryptPasswordEncoder.encode(password))
         .phone(body.getPhone())
         .email(body.getEmail())
         .address(body.getAddress())
         .birthday(body.getBirthday())
-        .is_valid(body.is_valid())
+//        .is_valid(body.is_valid())
         .register_date(registerDate)
         .update_date(updateDate)
         .build();
